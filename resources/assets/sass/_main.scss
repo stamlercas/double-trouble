@@ -1,0 +1,113 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 1, 2016, 9:09:24 PM
+    Author     : Chris
+*/
+
+body {
+    font-family: 'Istok Web', sans-serif;
+}
+button:focus, input[type=text]:focus, textarea:focus {
+  @include box-shadow(0 0 5px $text-color);
+  border: 1px solid $text-color;
+}
+
+.btn {
+    margin-top:7px;
+}
+.form-control {
+    background:none;
+    border:1px solid $text-color-dark;
+    color:$text-color-dark;
+    border-radius:0;
+    -webkit-tap-highlight-color:$text-color;
+    font-family: 'Istok Web', sans-serif;
+}
+.form-control:hover {
+    color:$text-color;
+    border:1px solid $text-color;
+}
+.input-group-addon {
+    background-color: $body-bg;
+    color:$text-color-dark;
+    border-radius:0;
+}
+.input-group-addon:hover {
+    background-color:$text-color;
+    color: $body-bg;
+}
+.main-content {
+    padding: 12px 24px;
+    /* border-bottom: 1px solid #282828;
+    min-height: 96px; */
+    position: relative;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    /*
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    */
+    font-family: 'Montserrat', sans-serif;
+}
+.navbar {
+    background: none;
+    border: none;
+}
+.navbar-default .navbar-brand,
+.navbar-default .navbar-nav>li>a,
+.input-group-addon, .form-control {
+    @include transition-property(background-color, color, border-color, opacity);
+    @include transition-duration(.3s);
+    @include transition-timing-function(ease-out);
+    /*
+    webkit-transition: color .3s ease-out,
+        background-color .3s ease-out,
+        border-color .3s ease-out,
+        opacity .3s ease-out;
+    transition: color .3s ease-out,
+        background-color .3s ease-out,
+        border-color .3s ease-out,
+        opacity .3s ease-out;
+    */
+}
+.navbar-default .navbar-brand {
+    font-family: 'Montserrat', sans-serif;
+}
+.navbar-default .navbar-brand,
+.navbar-default .navbar-nav>li>a {
+    color:$text-color-dark;
+}
+.navbar-default .navbar-brand:hover {
+    border-bottom:2px solid $text-color;
+}
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-nav>li>a:hover,
+.input-group {
+    color:$text-color;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color:#fff;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+    background-color:$text-color;
+}
+.question {
+    font-weight: 100;
+    font-size: 30px;
+    text-align: center;
+    padding:12px 24px;
+}
+/*#7AA70F*/
+
+
