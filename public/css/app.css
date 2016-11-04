@@ -5757,8 +5757,7 @@ button:focus, button:active, input[type=text]:focus, textarea:focus,
 .btn:hover, .btn:focus, .btn.focus {
   box-shadow: 0 0 5px #9CD121;
   border: 1px solid #9CD121;
-  color: #9CD121;
-  outline: 0; }
+  color: #9CD121; }
 
 .btn-container {
   margin-top: 15px; }
@@ -5854,6 +5853,11 @@ button:focus, button:active, input[type=text]:focus, textarea:focus,
   float: right !important; }
 
 @media (max-width: 767px) {
+  .question {
+    font-weight: 100;
+    font-size: 20px;
+    text-align: center;
+    padding: 12px 24px; }
   .navbar-right {
     margin-right: 20px; }
   .navbar-header:after {
