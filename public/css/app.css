@@ -5755,10 +5755,11 @@ body {
 
 button:focus, input[type=text]:focus, textarea:focus {
   box-shadow: 0 0 5px #9CD121;
-  border: 1px solid #9CD121; }
+  border: 1px solid #9CD121;
+  color: #9CD121; }
 
-.btn {
-  margin-top: 7px; }
+.btn-container {
+  margin-top: 15px; }
 
 .form-control {
   background: none;

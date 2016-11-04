@@ -22,15 +22,17 @@
                 <nav class="navbar navbar-default navbar-static-top" id="navbar">
                     <div class="container">
                       <div class="navbar-header">
+                          <!--
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                           <span class="sr-only">Toggle navigation</span>
                           <span class="icon-bar"></span>
                           <span class="icon-bar"></span>
                           <span class="icon-bar"></span>
                         </button>
+                          -->
                           <a class="navbar-brand header" href="#">Double Trouble</a>
                       </div>
-                      <div id="navbar" class="navbar-collapse collapse">
+                        <div id="navbar" class="navbar-collapse collapse">
                         <ul id='navbar-right' class="nav navbar-nav navbar-right">
                             <li><a>@{{ score }}</a></li>
                         </ul>
@@ -57,11 +59,13 @@
                                    v-el='response'
                                    v-on:keyup.13="answerQuestion(response)">
                         </div>
-                        <div class="form-group col-sm-6">
-                            <button class="form-control btn" v-on:click='fetchRandomQuestion()'>Pass</button>
-                        </div>
-                        <div class="form-group col-sm-6">
-                            <button class="form-control btn" v-on:click='answerQuestion("")'>I don't know</button>
+                        <div class='btn-container'>
+                            <div class="form-group col-sm-6">
+                                <button class="form-control btn" v-on:click='fetchRandomQuestion()'>Pass</button>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <button class="form-control btn" v-on:click='answerQuestion("")'>I don't know</button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -14,10 +14,11 @@ body {
 button:focus, input[type=text]:focus, textarea:focus {
   @include box-shadow(0 0 5px $text-color);
   border: 1px solid $text-color;
+  color: $text-color;
 }
 
-.btn {
-    margin-top:7px;
+.btn-container {
+    margin-top:15px;
 }
 .form-control {
     background:none;

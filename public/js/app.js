@@ -50,7 +50,10 @@ $(document).ready(function() {
                 //console.log(this.question);
             },
             answerQuestion: function(response) {
-                if (this.question.response.toUpperCase() === response.toUpperCase())    //correct response
+                //if (this.question.response.toUpperCase().match(response.toUpperCase()))
+                if (this.question.response.toUpperCase() === response.toUpperCase()
+                        || (this.question.response.toUpperCase() === 'a ' + response.toUpperCase()    //correct response
+                        || this.question.response.toUpperCase() === 'the ' + response.toUpperCase()))
                 {
                     this.score += this.question.value;
                 }

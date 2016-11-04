@@ -10,7 +10,10 @@ class QuestionController extends Controller
     
     function getQuestion()
     {
-        $json = json_decode(file_get_contents($this->api_url . 'questions/random.json'));
+        do {
+            $json = json_decode(file_get_contents($this->api_url . 'questions/random.json'));
+        } while (strpos($json->question->body, '<') || strpos($json->question->response, '('));
+        
         return json_encode($json->question);
     }
 }
