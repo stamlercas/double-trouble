@@ -5757,7 +5757,8 @@ button:focus, button:active, input[type=text]:focus, textarea:focus,
 .btn:hover, .btn:focus, .btn.focus {
   box-shadow: 0 0 5px #9CD121;
   border: 1px solid #9CD121;
-  color: #9CD121; }
+  color: #9CD121;
+  outline: 0; }
 
 .btn-container {
   margin-top: 15px; }
@@ -5799,19 +5800,6 @@ button:focus, button:active, input[type=text]:focus, textarea:focus,
     display: flex;
     */
   font-family: 'Montserrat', sans-serif; }
-
-.modal-default-button {
-  background: none;
-  border: 1px solid #1F1B1D;
-  color: #1F1B1D;
-  border-radius: 0;
-  -webkit-tap-highlight-color: #9CD121;
-  font-family: 'Istok Web', sans-serif; }
-
-.modal-default-button:hover {
-  color: #fff;
-  border: 1px solid #AD1B77;
-  background-color: #AD1B77; }
 
 .navbar {
   background: none;
