@@ -28,6 +28,7 @@ $(document).ready(function() {
                 }
             },
             score: 0,
+            passes: 3,
             showModal: false,
             correctAnswer: '',
             response: ''
@@ -64,6 +65,13 @@ $(document).ready(function() {
                     this.score -= this.question.value;
                 }
                 this.reset();
+            },
+            pass: function() {
+                if (this.passes > 0) //make sure they can actually pass on a question
+                {
+                    this.passes--;
+                    this.reset();
+                }
             },
             reset: function() {
                 this.$data.response = '';

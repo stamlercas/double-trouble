@@ -5753,7 +5753,8 @@ and open the template in the editor.
 body {
   font-family: 'Istok Web', sans-serif; }
 
-button:focus, input[type=text]:focus, textarea:focus {
+button:focus, button:active, input[type=text]:focus, textarea:focus,
+.btn:hover, .btn:focus, .btn.focus {
   box-shadow: 0 0 5px #9CD121;
   border: 1px solid #9CD121;
   color: #9CD121; }
@@ -5798,6 +5799,19 @@ button:focus, input[type=text]:focus, textarea:focus {
     display: flex;
     */
   font-family: 'Montserrat', sans-serif; }
+
+.modal-default-button {
+  background: none;
+  border: 1px solid #1F1B1D;
+  color: #1F1B1D;
+  border-radius: 0;
+  -webkit-tap-highlight-color: #9CD121;
+  font-family: 'Istok Web', sans-serif; }
+
+.modal-default-button:hover {
+  color: #fff;
+  border: 1px solid #AD1B77;
+  background-color: #AD1B77; }
 
 .navbar {
   background: none;
@@ -5848,6 +5862,36 @@ button:focus, input[type=text]:focus, textarea:focus {
   padding: 12px 24px; }
 
 /*#7AA70F*/
+.navbar-right {
+  float: right !important; }
+
+@media (max-width: 767px) {
+  .navbar-right {
+    margin-right: 20px; }
+  .navbar-header:after {
+    clear: none; }
+  .navbar-nav.navbar-right > li {
+    float: left; }
+  .navbar-collapse:before {
+    clear: both; }
+  .navbar-collapse {
+    overflow-y: hidden; }
+  .navbar-collapse.in {
+    overflow-y: visible; }
+  .navbar-collapse.in > ul {
+    border-top: 1px double #101010; } }
+
+.navbar-brand {
+  font-size: 25px;
+  line-height: 10px;
+  padding-bottom: 5px; }
+
+.logo_tagline {
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #bbb; }
+
 /*
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -5878,7 +5922,7 @@ and open the template in the editor.
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;
-  box-shadow: 0 2px 8px #7AA70F;
+  box-shadow: 0 2px 8px #1F1B1D;
   transition: all .3s ease;
   color: #1F1B1D; }
 
@@ -5909,5 +5953,18 @@ and open the template in the editor.
 .modal-enter .modal-container,
 .modal-leave-active .modal-container {
   transform: scale(1.1); }
+
+.modal-default-button {
+  background: none;
+  border: 1px solid #1F1B1D;
+  color: #1F1B1D;
+  border-radius: 0;
+  -webkit-tap-highlight-color: #9CD121;
+  font-family: 'Istok Web', sans-serif; }
+
+.modal-default-button:hover {
+  color: #fff;
+  border: 1px solid #AD1B77;
+  background-color: #AD1B77; }
 
 /*# sourceMappingURL=app.css.map */

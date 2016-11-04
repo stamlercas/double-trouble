@@ -32,10 +32,12 @@
                           -->
                           <a class="navbar-brand header" href="#">Double Trouble</a>
                       </div>
-                        <div id="navbar" class="navbar-collapse collapse">
                         <ul id='navbar-right' class="nav navbar-nav navbar-right">
-                            <li><a>@{{ score }}</a></li>
+                            <li><a>Passes: @{{ passes }}</a></li>
+                            <li><a>Score: @{{ score }}</a></li>
                         </ul>
+                        <div id="navbar" class="navbar-collapse collapse">
+                        
                       </div><!--/.nav-collapse -->
                     </div>
                 </nav>      
@@ -56,12 +58,12 @@
                             <input type="text" class="form-control" placeholder="Answer"
                                    id='response'
                                    v-model="response"
-                                   v-el='response'
-                                   v-on:keyup.13="answerQuestion(response)">
+                                   v-on:keyup.13="answerQuestion(response)"
+                                   autofocus>
                         </div>
                         <div class='btn-container'>
                             <div class="form-group col-sm-6">
-                                <button class="form-control btn" v-on:click='fetchRandomQuestion()'>Pass</button>
+                                <button class="form-control btn" v-on:click='pass()'>Pass</button>
                             </div>
                             <div class="form-group col-sm-6">
                                 <button class="form-control btn" v-on:click='answerQuestion("")'>I don't know</button>
@@ -98,7 +100,7 @@
 
                         <div class="modal-footer">
                           <slot name="footer">
-                            <button class="modal-default-button" @click="$emit('close')">
+                            <button class="modal-default-button form-control btn" @click="$emit('close')">
                               OK
                             </button>
                           </slot>

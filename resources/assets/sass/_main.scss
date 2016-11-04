@@ -11,7 +11,8 @@ and open the template in the editor.
 body {
     font-family: 'Istok Web', sans-serif;
 }
-button:focus, input[type=text]:focus, textarea:focus {
+button:focus, button:active, input[type=text]:focus, textarea:focus,
+.btn:hover, .btn:focus, .btn.focus{
   @include box-shadow(0 0 5px $text-color);
   border: 1px solid $text-color;
   color: $text-color;
@@ -112,3 +113,35 @@ button:focus, input[type=text]:focus, textarea:focus {
 /*#7AA70F*/
 
 
+.navbar-right {float: right !important;}
+
+@media(max-width:767px)
+{
+    .navbar-right {margin-right:20px;}
+    .navbar-header:after 
+    {
+        clear: none;
+    }
+    .navbar-nav.navbar-right > li { float: left; }
+
+    .navbar-collapse:before {clear:both;}
+
+    .navbar-collapse {overflow-y: hidden;}
+    .navbar-collapse.in {overflow-y: visible;}
+
+    .navbar-collapse.in > ul {border-top: 1px double #101010;}
+}
+
+    .navbar-brand {
+        font-size: 25px;
+        line-height: 10px;
+        padding-bottom: 5px;
+    }
+    .logo_tagline {
+    text-transform:	uppercase;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color:#bbb;
+
+
+    }

@@ -31,7 +31,7 @@ and open the template in the editor.
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;
-  box-shadow: 0 2px 8px $text-color-dark;
+  box-shadow: 0 2px 8px $body-bg;
   transition: all .3s ease;
   
   color:$body-bg;
@@ -71,4 +71,19 @@ and open the template in the editor.
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+
+.modal-default-button {
+    background:none;
+    border:1px solid $body-bg;
+    color:$body-bg;
+    border-radius:0;
+    -webkit-tap-highlight-color:$text-color;
+    font-family: 'Istok Web', sans-serif;
+}
+.modal-default-button:hover {
+    color:#fff;
+    border:1px solid $complimentary;
+    background-color:$complimentary;
 }
