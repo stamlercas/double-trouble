@@ -63,11 +63,16 @@
                                    autofocus>
                         </div>
                         <div class='btn-container'>
-                            <div class="form-group col-sm-6">
-                                <button class="form-control btn" v-on:click='pass()'>Pass</button>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <button class="form-control btn" v-on:click='answerQuestion("")'>I don't know</button>
+                            <div class='row'>
+                                <div class="form-group col-sm-6 hidden-sm hidden-md hidden-lg">
+                                <button class="form-control btn" v-on:click='pass()'>Submit Answer</button>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <button class="form-control btn" v-on:click='pass()'>Pass</button>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <button class="form-control btn" v-on:click='answerQuestion("")'>I don't know</button>
+                                </div>
                             </div>
                         </div>
                     </div>
