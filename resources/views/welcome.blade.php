@@ -78,6 +78,7 @@
                     </div>
                 </div>
             </div>
+            <loading v-if='loading'></loading>
             <!-- use the modal component, pass in the prop -->
             <modal v-if="showModal" @close="showModal = false">
               <!--
@@ -88,7 +89,15 @@
             </modal>
         </div>
             <script type="text/x-template" id="modal-template">
-                <transition name="modal">
+                transition name="modal">
+                  <div class="modal-mask">
+                    <div class="modal-wrapper">
+                      <div class="modal-container">
+
+                        <div class="modal-header">
+                          <slot name="header">
+                          </slot>
+                        </div><transition name="modal">
                   <div class="modal-mask">
                     <div class="modal-wrapper">
                       <div class="modal-container">
@@ -115,6 +124,37 @@
                     </div>
                   </div>
                 </transition>
+            </script>
+            <script type="text/x-template" id="loading-modal">
+                    <div class='loader-container'>
+                        <svg class="loader">
+                          <filter id="blur">
+                            <fegaussianblur in="SourceGraphic" stddeviation="2"></fegaussianblur>
+                          </filter>
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="#F4F519" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+                        </svg>
+                        <svg class="loader loader-2">
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="#DE2FFF" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+                        </svg>
+                        <svg class="loader loader-3">
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="#FF5932" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+                        </svg>
+                        <svg class="loader loader-4">
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="#E97E42" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+                        </svg>
+                        <svg class="loader loader-5">
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="white" stroke-width="6" stroke-linecap="round" filter="url(#blur)"></circle>
+                        </svg>
+                        <svg class="loader loader-6">
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="#00DCA3" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+                        </svg>
+                        <svg class="loader loader-7">
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="purple" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+                        </svg>
+                        <svg class="loader loader-8">
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="#AAEA33" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+                        </svg>
+                    </div>
             </script>
 
     </body>

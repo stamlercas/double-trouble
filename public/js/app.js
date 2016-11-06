@@ -12,6 +12,14 @@ $(document).ready(function() {
         props: ['message'],
         template: '#modal-template'
     })
+    
+    Vue.component('loading', {
+        template: '#loading-modal'
+    })
+
+    Vue.component('difficulty', {
+        template: '#difficulty'
+    })
 
     var vm = new Vue({
         //whatever div we want to target
@@ -27,9 +35,24 @@ $(document).ready(function() {
                     name: ''
                 }
             },
+            difficulties: [
+                {
+                    title: 'Easy',
+                    value: 0
+                },
+                {
+                    title: 'Medium',
+                    value: 0
+                },
+                {
+                    title: 'Hard',
+                    value: 0
+                }
+            ],
             score: 0,
             passes: 3,
             showModal: false,
+            loading: true,
             correctAnswer: '',
             response: ''
         },
@@ -42,12 +65,15 @@ $(document).ready(function() {
         // Methods we want to use in our application are registered here
         methods: {
             fetchRandomQuestion: function() {
+                this.loading = true;
+                this.question.body = 'Loading...';
                 this.$http.get('/question').then((response) => {
                     this.$set(this, 'question', JSON.parse(response.body));
                     console.log(this.question.body);
                   }, (response) => {
                     console.log(response);
                   });
+                this.loading = false;
                 //console.log(this.question);
             },
             answerQuestion: function(response) {

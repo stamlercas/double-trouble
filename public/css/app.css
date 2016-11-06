@@ -5959,4 +5959,56 @@ and open the template in the editor.
   border: 1px solid #AD1B77;
   background-color: #AD1B77; }
 
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 5, 2016, 6:10:17 PM
+    Author     : Chris
+*/
+.loader-container {
+  position: relative;
+  margin: 50px auto;
+  width: 150px; }
+
+.loader {
+  position: absolute;
+  opacity: .7; }
+
+.loader circle {
+  animation: draw 4s infinite ease-in-out;
+  transform-origin: center;
+  transform: rotate(-90deg); }
+
+.loader-2 circle,
+.loader-6 circle {
+  animation-delay: 1s; }
+
+.loader-7 circle {
+  animation-delay: 2s; }
+
+.loader-4 circle,
+.loader-8 circle {
+  animation-delay: 3s; }
+
+.loader-3 {
+  left: -150px;
+  transform: rotateY(180deg); }
+
+.loader-6,
+.loader-7,
+.loader-8 {
+  left: -150px;
+  transform: rotateX(180deg) rotateY(180deg); }
+
+.loader-5 circle {
+  opacity: .2; }
+
+@keyframes draw {
+  50% {
+    stroke-dashoffset: 0;
+    transform: scale(0.5); } }
+
 /*# sourceMappingURL=app.css.map */
