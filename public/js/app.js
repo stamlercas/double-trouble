@@ -12,14 +12,17 @@ $(document).ready(function() {
         props: ['message'],
         template: '#modal-template'
     })
+
+    Vue.component('question-container', {
+        props: ['question'],
+        template: '#question-container'
+    })
     
     Vue.component('loading', {
         template: '#loading-modal'
     })
 
-    Vue.component('difficulty', {
-        template: '#difficulty'
-    })
+
 
     var vm = new Vue({
         //whatever div we want to target
@@ -28,6 +31,10 @@ $(document).ready(function() {
         // Here we can register any values or collections that hold data
         // for the application
         data: {
+            steps: [
+                'select categories',
+                'answer questions'
+            ],
             question: {
                 body: '',
                 response: '',
@@ -35,20 +42,6 @@ $(document).ready(function() {
                     name: ''
                 }
             },
-            difficulties: [
-                {
-                    title: 'Easy',
-                    value: 0
-                },
-                {
-                    title: 'Medium',
-                    value: 0
-                },
-                {
-                    title: 'Hard',
-                    value: 0
-                }
-            ],
             score: 0,
             passes: 3,
             showModal: false,

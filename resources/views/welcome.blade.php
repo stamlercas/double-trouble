@@ -46,35 +46,9 @@
             <div class="container main-content" id="question">
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3">
-                        <div class="category">
-                            Category: @{{ question.category.name }}
-                        </div>
-                        <div class="question" id="body">
-                            @{{question.body}}
-                        </div>
-                        <div class="answer-form" id="answer-form">
-                            <!--
-                            <span class="input-group-addon" id="basic-addon1">Answer:</span>
-                            -->
-                            <input type="text" class="form-control" placeholder="Answer"
-                                   id='response'
-                                   v-model="response"
-                                   v-on:keyup.13="answerQuestion(response)"
-                                   autofocus>
-                        </div>
-                        <div class='btn-container'>
-                            <div class='row'>
-                                <div class="form-group col-sm-6 hidden-sm hidden-md hidden-lg">
-                                <button class="form-control btn" v-on:click='pass()'>Submit Answer</button>
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <button class="form-control btn" v-on:click='pass()'>Pass</button>
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <button class="form-control btn" v-on:click='answerQuestion("")'>I don't know</button>
-                                </div>
-                            </div>
-                        </div>
+                      <category-selector></category-selector>
+                      <question-container :question=question></question-container>
+                        
                     </div>
                 </div>
             </div>
@@ -88,6 +62,39 @@
               <div slot='body'>I'm sorry, the correct was @{{correctAnswer}}.</div>
             </modal>
         </div>
+            <script type="text/x-template" id="question-container">
+              <div>
+                <div class="category">
+                    Category: @{{ question.category.name }}
+                </div>
+                <div class="question" id="body">
+                    @{{question.body}}
+                </div>
+                <div class="answer-form" id="answer-form">
+                    <!--
+                    <span class="input-group-addon" id="basic-addon1">Answer:</span>
+                    -->
+                    <input type="text" class="form-control" placeholder="Answer"
+                           id='response'
+                           v-model="response"
+                           v-on:keyup.13="answerQuestion(response)"
+                           autofocus>
+                </div>
+                <div class='btn-container'>
+                    <div class='row'>
+                        <div class="form-group col-sm-6 hidden-sm hidden-md hidden-lg">
+                        <button class="form-control btn" v-on:click='pass()'>Submit Answer</button>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <button class="form-control btn" v-on:click='pass()'>Pass</button>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <button class="form-control btn" v-on:click='answerQuestion("")'>I don't know</button>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </script>
             <script type="text/x-template" id="modal-template">
                 transition name="modal">
                   <div class="modal-mask">
