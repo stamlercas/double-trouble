@@ -14,8 +14,8 @@ class QuestionController extends Controller
         //Also filter out all repsonses that have more than one response
         do {
             $json = json_decode(file_get_contents($this->api_url . 'questions/random.json'));
-        } while (strpos($json->question->body, '<') || strpos($json->question->response, '('));
-        
+        } while (strpos($json->question->body, '<') || strpos($json->question->response, '(') || strpos($json->question->response, '/'));
+
         return json_encode($json->question);
     }
 }

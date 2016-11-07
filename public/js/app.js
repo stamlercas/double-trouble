@@ -36,7 +36,7 @@ $(document).ready(function() {
 
         // Anything within the ready function will run when the application loads
         created: function() {
-            this.fetchRandomQuestion();
+            this.reset();
         },
 
         // Methods we want to use in our application are registered here
@@ -44,23 +44,24 @@ $(document).ready(function() {
             fetchRandomQuestion: function() {
                 this.$http.get('/question').then((response) => {
                     this.$set(this, 'question', JSON.parse(response.body));
-                    console.log(this.question.body);
+                    console.log(this.question.response);
                   }, (response) => {
                     console.log(response);
                   });
                 //console.log(this.question);
             },
             answerQuestion: function(response) {
+                var answer = replaceAllBackSlash(this.question.response.toUpperCase());
                 //if (this.question.response.toUpperCase().match(response.toUpperCase()))
-                if (this.question.response.toUpperCase() === response.toUpperCase()
-                        || (this.question.response.toUpperCase() === 'a ' + response.toUpperCase()    //correct response
-                        || this.question.response.toUpperCase() === 'the ' + response.toUpperCase()))
+                if (answer === response.toUpperCase()
+                        || (answer == 'a ' + response.toUpperCase()    //correct response
+                        || answer == 'the ' + response.toUpperCase()))
                 {
                     this.score += this.question.value;
                 }
                 else
                 {
-                    this.correctAnswer = this.question.response;    //don't want to display answer to next question
+                    this.correctAnswer = this.question.response.replace("\\", "");    //don't want to display answer to next question
                     this.showModal = true;
                     this.score -= this.question.value;
                 }
@@ -82,3 +83,11 @@ $(document).ready(function() {
     });
 });
 
+function replaceAllBackSlash(targetStr){
+    var index=targetStr.indexOf("\\");
+    while(index >= 0){
+        targetStr=targetStr.replace("\\","");
+        index=targetStr.indexOf("\\");
+    }
+    return targetStr;
+}
