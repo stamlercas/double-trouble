@@ -13,10 +13,12 @@ $(document).ready(function() {
         template: '#modal-template'
     })
 
+    /* maybe later
     Vue.component('question-container', {
         props: ['question'],
         template: '#question-container'
     })
+    */
     
     Vue.component('loading', {
         template: '#loading-modal'
@@ -42,6 +44,8 @@ $(document).ready(function() {
                     name: ''
                 }
             },
+            categories: {},     // contains the categories
+            questions: {},      // this will have arrays of questions for each category
             score: 0,
             passes: 3,
             showModal: false,
@@ -57,6 +61,34 @@ $(document).ready(function() {
 
         // Methods we want to use in our application are registered here
         methods: {
+            fetchCategories: function(value) {
+                var categories;
+                this.$http.get('/categories').then((response) => {
+                    categories = JSON.parse(response.body); // placing the categories into the array
+                    console.log(this.question.body);
+                  }, (response) => {
+                    console.log(response);
+                  });
+                var numCategories = 5;
+                var temp;   // this will be where categories questions are pushed to
+                for (var i = 0; i < numCategories; i++)
+                {
+                    categoryFlag = false;   // will be raised if the category is found in the temp variable
+                    do {
+                        temp[i] = categories[Math.floor(Math.random() * ( (categories.length - 1) - (0 + 1))];
+                        for (var j = 0; j < i; j++)
+                        {
+                            // if the two array indexes are found to have the same id, raise the flag and pick a different category
+                            if (temp[i].id == temp[i].id)
+                                categoryFlag = true;
+                            else
+                                categoryFlag = false;
+                        }
+                    } while(categoryFlag)   //keep repeating while the flag is raised
+                }
+                // after the categorys are picked from the object, push them onto the categories array in app
+                this.$set(this, 'categories', JSON.parse(temp));
+            },
             fetchRandomQuestion: function() {
                 this.loading = true;
                 this.question.body = 'Loading...';

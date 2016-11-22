@@ -18,3 +18,11 @@ Route::get('/question', [
     'uses' => 'QuestionController@getQuestion',
     'as' => 'question.get'
 ]);
+Route::get('/categories/', [
+    'uses' => 'QuestionController@getCategories',
+    'as' => 'categories.get'
+]);
+Route::get('/categories/{id}', [
+    'uses' => 'QuestionController@getCategory',
+    'as' => 'category.get'
+]);
