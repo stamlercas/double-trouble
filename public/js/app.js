@@ -44,50 +44,84 @@ $(document).ready(function() {
                     name: ''
                 }
             },
-            categories: {},     // contains the categories
+            categories: [],     // contains the categories
             questions: {},      // this will have arrays of questions for each category
             score: 0,
             passes: 3,
             showModal: false,
             loading: true,
             correctAnswer: '',
-            response: ''
+            response: '',
+            numCategories: 5,   // number of categories in game
+            numQuestions: 5,    // number of questions in each category
+            currentQuestion: 0  // to keep track of how many questions the user has answered
         },
 
         // Anything within the ready function will run when the application loads
         created: function() {
-            this.fetchRandomQuestion();
+            this.fetchCategories();
         },
 
         // Methods we want to use in our application are registered here
         methods: {
-            fetchCategories: function(value) {
+            fetchCategories: function() {
                 var categories;
                 this.$http.get('/categories').then((response) => {
                     categories = JSON.parse(response.body); // placing the categories into the array
-                    console.log(this.question.body);
+                    console.log(categories.length);
+                    var numCategories = 5;      // number of categories
+                    var numQuestions = 5;       // number of questions in each category
+
+                    var temp = [];   // this will be where categories questions are pushed to
+                    for (var i = 0; i < numCategories; i++)
+                    {
+                        categoryFlag = false;   // will be raised if the category is found in the temp variable
+                        do {
+                            var num = Math.floor(Math.random() * ( (categories.length - 1) - (0) ));
+                            console.log(num);
+                            temp[i] = categories[num];
+                            for (var j = 0; j < i; j++)
+                            {
+                                // if the two array indexes are found to have the same id, raise the flag and pick a different category
+                                if (temp[j].id == temp[i].id && i != j)
+                                    categoryFlag = true;
+                                else
+                                    categoryFlag = false;
+                            }
+                        } while(categoryFlag);  // keep repeating while the flag is raised
+                    }
+                    // after the categorys are picked from the object, push them onto the categories array in app 
+                    for (var i = 0; i < temp.length; i++)
+                    {
+                        console.log(temp[i]);
+                    }
+                    this.categories = temp;
                   }, (response) => {
                     console.log(response);
-                  });
-                var numCategories = 5;
-                var temp;   // this will be where categories questions are pushed to
-                for (var i = 0; i < numCategories; i++)
-                {
-                    categoryFlag = false;   // will be raised if the category is found in the temp variable
-                    do {
-                        temp[i] = categories[Math.floor(Math.random() * ( (categories.length - 1) - (0 + 1))];
-                        for (var j = 0; j < i; j++)
+
+                // chaining promises together
+                /*
+                  }).then( function() {
+                    // now time to create an array of questions for each category
+                    for (var i = 0; i < this.categories.length; i++)
+                    {
+                        for (var j = 0; j < this.numQuestions; j++)
                         {
-                            // if the two array indexes are found to have the same id, raise the flag and pick a different category
-                            if (temp[i].id == temp[i].id)
-                                categoryFlag = true;
-                            else
-                                categoryFlag = false;
+                            this.$http.get('/categories/' + this.categories[i].id).then((response) => {
+                                body = JSON.parse(response.body);
+                                console.log(body);
+                                // grabbing a random question from the category
+                                this.categories[i].questions[j] = body.category.question[Math.floor(Math.random() * ( (body.category.questions.length - 1) - (0 + 1)))];
+                            }, (response) => {
+                                console.log(response);
+                            });
                         }
-                    } while(categoryFlag)   //keep repeating while the flag is raised
-                }
-                // after the categorys are picked from the object, push them onto the categories array in app
-                this.$set(this, 'categories', JSON.parse(temp));
+                    }
+                */
+                // last promise... start the game!!
+                  }).then( function() {
+                    this.getQuestion();
+                  });
             },
             fetchRandomQuestion: function() {
                 this.loading = true;
@@ -95,23 +129,40 @@ $(document).ready(function() {
                 this.$http.get('/question').then((response) => {
                     this.$set(this, 'question', JSON.parse(response.body));
                     console.log(this.question.body);
+                    this.loading = false;   // put in promise, since it is async
                   }, (response) => {
                     console.log(response);
                   });
-                this.loading = false;
                 //console.log(this.question);
             },
+            getQuestion: function() {
+                this.loading = true;
+                this.question.body = 'Loading...';
+                var i = parseInt(this.currentQuestion / this.numCategories);
+                this.$http.get('/categories/' + this.categories[i].id).then((response) => {
+                                body = JSON.parse(response.body);
+                                // grabbing a random question from the category
+                                this.$set(this, 'question', body.category.questions[Math.floor(Math.random() * ( (body.category.questions.length - 1) - (0 + 1)))] );
+                                
+                                this.question.category = this.categories[i];
+                                this.loading = false;
+                                console.log(this.question);
+                            }, (response) => {
+                                console.log(response);
+                            });
+            },
             answerQuestion: function(response) {
+                var answer = replaceAllBackSlash(this.question.response.toUpperCase());
                 //if (this.question.response.toUpperCase().match(response.toUpperCase()))
-                if (this.question.response.toUpperCase() === response.toUpperCase()
-                        || (this.question.response.toUpperCase() === 'a ' + response.toUpperCase()    //correct response
-                        || this.question.response.toUpperCase() === 'the ' + response.toUpperCase()))
+                if (answer === response.toUpperCase()
+                        || (answer == 'a ' + response.toUpperCase()    //correct response
+                        || answer == 'the ' + response.toUpperCase()))
                 {
                     this.score += this.question.value;
                 }
                 else
                 {
-                    this.correctAnswer = this.question.response;    //don't want to display answer to next question
+                    this.correctAnswer = this.question.response.replace("\\", "");    //don't want to display answer to next question
                     this.showModal = true;
                     this.score -= this.question.value;
                 }
@@ -125,11 +176,20 @@ $(document).ready(function() {
                 }
             },
             reset: function() {
+                this.currentQuestion++;
                 this.$data.response = '';
-                this.fetchRandomQuestion();
+                this.getQuestion();
             }
         }
 
     });
 });
 
+function replaceAllBackSlash(targetStr){
+    var index=targetStr.indexOf("\\");
+    while(index >= 0){
+        targetStr=targetStr.replace("\\","");
+        index=targetStr.indexOf("\\");
+    }
+    return targetStr;
+}

@@ -48,7 +48,9 @@
                     <div class="col-md-6 col-md-offset-3">
                       <div>
                         <div class="category">
-                            Category: @{{ question.category.name }}
+                            Category @{{ parseInt( this.currentQuestion / this.numCategories ) + 1 }} of @{{ numCategories }}: @{{ question.category.name }}
+                            <br />
+                            Question: @{{ parseInt( this.currentQuestion % this.numCategories ) + 1 }} of @{{ numQuestions }}
                         </div>
                         <div class="question" id="body">
                             @{{question.body}}
@@ -66,7 +68,7 @@
                         <div class='btn-container'>
                             <div class='row'>
                                 <div class="form-group col-sm-6 hidden-sm hidden-md hidden-lg">
-                                <button class="form-control btn" v-on:click='pass()'>Submit Answer</button>
+                                <button class="form-control btn" v-on:click='answerQuestion(response)'>Submit Answer</button>
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <button class="form-control btn" v-on:click='pass()'>Pass</button>

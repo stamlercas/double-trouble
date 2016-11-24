@@ -10,7 +10,7 @@ class QuestionController extends Controller
     
     function getCategories()
     {
-        $number = 50;   // number of categories to retrieve and return
+        $number = 100;   // number of categories to retrieve and return
         $categories = array();
         $pages = $number / 10;  // paginated in 10s
         if ($number % 10 != 0)  // grab the remainder if the number of categories is not divisible by 10
@@ -19,7 +19,7 @@ class QuestionController extends Controller
         }
         // grab categories
         for ($i = 1; $i <= $pages; $i++) {
-                $json = json_decode(file_get_contents($this->api_url . 'categories.json?popular=50&page=1'));
+                $json = json_decode(file_get_contents($this->api_url . 'categories.json?popular=' . $number . '&page=' . $i));
                 for ($j = 0; $j < count($json->categories); $j++)   // needs to grab individual elements, or it returns array of arrays
                 {
                     array_push($categories, $json->categories[$j]);  // adding categories to list
