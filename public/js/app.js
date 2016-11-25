@@ -19,6 +19,16 @@ $(document).ready(function() {
         template: '#question-container'
     })
     */
+
+    Vue.component('category-item', {
+        props: ['category', 'active'],
+        template: '#category-item',
+        computed: {
+            isActive: function() {
+                return active ? true : false;
+            }
+        }
+    })
     
     Vue.component('loading', {
         template: '#loading-modal'
@@ -68,7 +78,7 @@ $(document).ready(function() {
                 var categories;
                 this.$http.get('/categories').then((response) => {
                     categories = JSON.parse(response.body); // placing the categories into the array
-                    console.log(categories.length);
+                    console.log("Number of categories: " + categories.length);
                     var numCategories = 5;      // number of categories
                     var numQuestions = 5;       // number of questions in each category
 
@@ -77,9 +87,9 @@ $(document).ready(function() {
                     {
                         categoryFlag = false;   // will be raised if the category is found in the temp variable
                         do {
-                            var num = Math.floor(Math.random() * ( (categories.length - 1) - (0) ));
-                            console.log(num);
-                            temp[i] = categories[num];
+                            var index = Math.floor(Math.random() * ( (categories.length - 1) - (0) ));
+                            console.log("Category id picked: " + index);
+                            temp[i] = categories[index];
                             for (var j = 0; j < i; j++)
                             {
                                 // if the two array indexes are found to have the same id, raise the flag and pick a different category
@@ -142,8 +152,23 @@ $(document).ready(function() {
                 this.$http.get('/categories/' + this.categories[i].id).then((response) => {
                                 body = JSON.parse(response.body);
                                 // grabbing a random question from the category
-                                this.$set(this, 'question', body.category.questions[Math.floor(Math.random() * ( (body.category.questions.length - 1) - (0 + 1)))] );
+                                // in order of indeces
+                                var jeopardyValues = [200, 400, 600, 800, 1000];
                                 
+                                // keep looping until it finds a suitable match
+                                var foundMatch = false;
+                                do {
+                                    // grab random question
+                                    var question = body.category.questions[Math.floor(Math.random() * ( (body.category.questions.length - 1) - (0 + 1)))];
+                                    // check whether the question matches the values specified
+                                    var questionInCategory = this.currentQuestion % this.numQuestions;
+                                    console.log([jeopardyValues[questionInCategory], jeopardyValues[questionInCategory] * 2]);
+                                    foundMatch = matchesQuestionValue(question, [jeopardyValues[questionInCategory], jeopardyValues[questionInCategory] * 2]);
+                                }   while(!foundMatch);
+                                // once it finds suitable question, set it in app and strip slashes
+                                question.body = question.body.substring(1, question.body.length - 1);
+                                this.$set(this, 'question', question );
+
                                 this.question.category = this.categories[i];
                                 this.loading = false;
                                 console.log(this.question);
@@ -168,6 +193,9 @@ $(document).ready(function() {
                 }
                 this.reset();
             },
+            finish: function() {
+                this.question.body = "Congratulations! You finished with a score of " + this.score + "!";
+            },
             pass: function() {
                 if (this.passes > 0) //make sure they can actually pass on a question
                 {
@@ -178,7 +206,10 @@ $(document).ready(function() {
             reset: function() {
                 this.currentQuestion++;
                 this.$data.response = '';
-                this.getQuestion();
+                if (this.currentQuestion == this.numCategories * this.numQuestions)
+                    this.finish();
+                else
+                    this.getQuestion();
             }
         }
 
@@ -192,4 +223,17 @@ function replaceAllBackSlash(targetStr){
         index=targetStr.indexOf("\\");
     }
     return targetStr;
+}
+
+/*
+* checks whether a questions value mathces the values given
+*/
+function matchesQuestionValue(question, values)
+{
+    for (var i = 0; i < values.length; i++)
+    {
+        if (question.value == values[i])
+            return true;
+    }
+    return false;
 }

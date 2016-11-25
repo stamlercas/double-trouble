@@ -5759,6 +5759,12 @@ button:focus, button:active, input[type=text]:focus, textarea:focus,
   border: 1px solid #9CD121;
   color: #9CD121; }
 
+li {
+  list-style-type: none; }
+
+.active {
+  color: #fff; }
+
 .btn-container {
   margin-top: 15px; }
 

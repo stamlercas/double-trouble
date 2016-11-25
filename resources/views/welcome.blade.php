@@ -31,7 +31,7 @@
                           <span class="icon-bar"></span>
                         </button>
                           -->
-                          <a class="navbar-brand header" href="#">Double Trouble</a>
+                          <a class="navbar-brand header" href="#" @click="doubleTrouble()" :class="">Double Trouble</a>
                       </div>
                         <ul id='navbar-right' class="nav navbar-nav navbar-right">
                             <li><a>Passes: @{{ passes }}</a></li>
@@ -48,10 +48,22 @@
                     <div class="col-md-6 col-md-offset-3">
                       <div>
                         <div class="category">
+                            <!--
                             Category @{{ parseInt( this.currentQuestion / this.numCategories ) + 1 }} of @{{ numCategories }}: @{{ question.category.name }}
-                            <br />
-                            Question: @{{ parseInt( this.currentQuestion % this.numCategories ) + 1 }} of @{{ numQuestions }}
+                            -->
+                            <ul class="list-group">
+                              <category-item v-for="(category, index) in categories" :category="category" :class="question.category.name == category.name ? 'active' : ''"></category-item>
+                            </ul>
                         </div>
+                        <div class="question-info">
+                          <div class="pull-left">
+                            Question: @{{ parseInt( this.currentQuestion % this.numCategories ) + 1 }} of @{{ numQuestions }}
+                          </div>
+                          <div class="pull-right">
+                            Value: @{{ this.question.value }}
+                          </div>
+                        </div>
+                        <br />
                         <div class="question" id="body">
                             @{{question.body}}
                         </div>
@@ -163,6 +175,11 @@
                           <circle cx="75" cy="75" r="60" fill="transparent" stroke="#AAEA33" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
                         </svg>
                     </div>
+            </script>
+            <script type="text/x-template" id="category-item">
+              <li>
+                <div> @{{ category.name }} </div>
+              </li>
             </script>
 
     </body>
