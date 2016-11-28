@@ -55,7 +55,7 @@
                               <category-item v-for="(category, index) in categories" :category="category" :class="question.category.name == category.name ? 'active' : ''"></category-item>
                             </ul>
                         </div>
-                        <div class="question-info">
+                        <div class="question-info" v-if="!finished">
                           <div class="pull-left">
                             Question: @{{ parseInt( this.currentQuestion % this.numCategories ) + 1 }} of @{{ numQuestions }}
                           </div>
@@ -67,7 +67,7 @@
                         <div class="question" id="body">
                             @{{question.body}}
                         </div>
-                        <div class="answer-form" id="answer-form">
+                        <div class="answer-form" id="answer-form" v-if="!finished">
                             <!--
                             <span class="input-group-addon" id="basic-addon1">Answer:</span>
                             -->
@@ -77,7 +77,7 @@
                                    v-on:keyup.13="answerQuestion(response)"
                                    autofocus>
                         </div>
-                        <div class='btn-container'>
+                        <div class='btn-container' v-if="!finished">
                             <div class='row'>
                                 <div class="form-group col-sm-6 hidden-sm hidden-md hidden-lg">
                                 <button class="form-control btn" v-on:click='answerQuestion(response)'>Submit Answer</button>

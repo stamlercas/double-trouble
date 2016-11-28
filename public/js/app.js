@@ -150,38 +150,67 @@ $(document).ready(function() {
                 this.question.body = 'Loading...';
                 var i = parseInt(this.currentQuestion / this.numCategories);
                 this.$http.get('/categories/' + this.categories[i].id).then((response) => {
-                                body = JSON.parse(response.body);
-                                // grabbing a random question from the category
-                                // in order of indeces
-                                var jeopardyValues = [200, 400, 600, 800, 1000];
-                                
-                                // keep looping until it finds a suitable match
-                                var foundMatch = false;
-                                do {
-                                    // grab random question
-                                    var question = body.category.questions[Math.floor(Math.random() * ( (body.category.questions.length - 1) - (0 + 1)))];
-                                    // check whether the question matches the values specified
-                                    var questionInCategory = this.currentQuestion % this.numQuestions;
-                                    console.log([jeopardyValues[questionInCategory], jeopardyValues[questionInCategory] * 2]);
-                                    foundMatch = matchesQuestionValue(question, [jeopardyValues[questionInCategory], jeopardyValues[questionInCategory] * 2]);
-                                }   while(!foundMatch);
-                                // once it finds suitable question, set it in app and strip slashes
-                                question.body = question.body.substring(1, question.body.length - 1);
-                                this.$set(this, 'question', question );
+                        body = JSON.parse(response.body);
+                        // grabbing a random question from the category
+                        // in order of indeces
+                        var jeopardyValues = [200, 400, 600, 800, 1000];
+                        
+                        // keep looping until it finds a suitable match
+                        var foundMatch = false;
+                        var index = 0;  // should probably keep track of index, so as to not get stuck in infinite loop
+                        do {
+                            // grab random question
+                            var question = body.category.questions[Math.floor(Math.random() * ( (body.category.questions.length - 1) - (0 + 1)))];
+                            // check whether the question matches the values specified
+                            var questionInCategory = this.currentQuestion % this.numQuestions;
+                            console.log([jeopardyValues[questionInCategory], jeopardyValues[questionInCategory] * 2]);
+                            foundMatch = matchesQuestionValue(question, [jeopardyValues[questionInCategory], jeopardyValues[questionInCategory] * 2]);
+                            if (question.body.search('<') != -1)   // if question contains HTML, search for new question
+                                foundMatch = false;
+                            index++; //
+                        }   while(!foundMatch || index < this.categories[i].questions_count);
+                        // once it finds suitable question, set it in app and strip slashes
+                        question.body = question.body.substring(1, question.body.length - 1);
+                        this.$set(this, 'question', question );
 
-                                this.question.category = this.categories[i];
-                                this.loading = false;
-                                console.log(this.question);
-                            }, (response) => {
-                                console.log(response);
-                            });
+                        this.question.category = this.categories[i];
+                        this.loading = false;
+                        console.log(this.question);
+                    }, (response) => {
+                        console.log(response);
+                });
             },
             answerQuestion: function(response) {
                 var answer = replaceAllBackSlash(this.question.response.toUpperCase());
+                var response = response.toUpperCase();
                 //if (this.question.response.toUpperCase().match(response.toUpperCase()))
-                if (answer === response.toUpperCase()
-                        || (answer == 'a ' + response.toUpperCase()    //correct response
-                        || answer == 'the ' + response.toUpperCase()))
+                var answerAdditives = [
+                    '',
+                    'A ',
+                    'THE ',
+                    'SIR '
+                ];
+                var correct = false;
+                for (var i = 0; i < answerAdditives.length; i++)
+                    if (answer == answerAdditives[i] + response.toUpperCase())
+                    {
+                        correct = true;
+                        break;
+                    }
+                // check to see whether the response matches the correct answer before paranthesis
+                if (response.indexOf(" (") != -1)
+                    if (answer == response.substring(0, response.indexOf(" (")))
+                        correct = true;
+                // or after parenthesis
+                if (response.indexOf(") ") != -1)
+                    if (answer == response.substring(") ", response.length))
+                        correct = true;
+                // if an answer has 2 answers seperated with an &
+                if (response.indexOf(" & ") != -1)
+                    if ( answer == response.substring(0, response.indexOf(" &")) ||
+                            answer == response.substring( response.indexOf("& ") + 2, response.length))
+                        correct = true;
+                if (correct)
                 {
                     this.score += this.question.value;
                 }
@@ -206,13 +235,17 @@ $(document).ready(function() {
             reset: function() {
                 this.currentQuestion++;
                 this.$data.response = '';
-                if (this.currentQuestion == this.numCategories * this.numQuestions)
+                if (this.currentQuestion >= this.numCategories * this.numQuestions)
                     this.finish();
                 else
                     this.getQuestion();
             }
+        },
+        computed: {
+            finished: function() {
+                return this.currentQuestion >= this.numCategories * this.numQuestions;
+            }
         }
-
     });
 });
 

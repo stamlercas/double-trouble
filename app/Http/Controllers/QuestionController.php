@@ -10,7 +10,7 @@ class QuestionController extends Controller
     
     function getCategories()
     {
-        $number = 100;   // number of categories to retrieve and return
+        $number = 250;   // number of categories to retrieve and return
         $categories = array();
         $pages = $number / 10;  // paginated in 10s
         if ($number % 10 != 0)  // grab the remainder if the number of categories is not divisible by 10
