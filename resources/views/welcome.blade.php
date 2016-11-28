@@ -31,7 +31,7 @@
                           <span class="icon-bar"></span>
                         </button>
                           -->
-                          <a class="navbar-brand header" href="#">Double Trouble</a>
+                          <a class="navbar-brand header" href="#" @click="doubleTrouble()" :class="">Double Trouble</a>
                       </div>
                         <ul id='navbar-right' class="nav navbar-nav navbar-right">
                             <li><a>Passes: @{{ passes }}</a></li>
@@ -46,13 +46,28 @@
             <div class="container main-content" id="question">
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3">
+                      <div>
                         <div class="category">
-                            Category: @{{ question.category.name }}
+                            <!--
+                            Category @{{ parseInt( this.currentQuestion / this.numCategories ) + 1 }} of @{{ numCategories }}: @{{ question.category.name }}
+                            -->
+                            <ul class="list-group">
+                              <category-item v-for="(category, index) in categories" :category="category" :class="question.category.name == category.name ? 'active' : ''"></category-item>
+                            </ul>
                         </div>
+                        <div class="question-info" v-if="!finished">
+                          <div class="pull-left">
+                            Question: @{{ parseInt( this.currentQuestion % this.numCategories ) + 1 }} of @{{ numQuestions }}
+                          </div>
+                          <div class="pull-right">
+                            Value: @{{ this.question.value }}
+                          </div>
+                        </div>
+                        <br />
                         <div class="question" id="body">
                             @{{question.body}}
                         </div>
-                        <div class="answer-form" id="answer-form">
+                        <div class="answer-form" id="answer-form" v-if="!finished">
                             <!--
                             <span class="input-group-addon" id="basic-addon1">Answer:</span>
                             -->
@@ -62,7 +77,7 @@
                                    v-on:keyup.13="answerQuestion(response)"
                                    autofocus>
                         </div>
-                        <div class='btn-container'>
+                        <div class='btn-container' v-if="!finished">
                             <div class='row'>
                                 <div class="form-group col-sm-6 hidden-sm hidden-md hidden-lg">
                                 <button class="form-control btn" v-on:click='answerQuestion(response)'>Submit Answer</button>
@@ -75,9 +90,12 @@
                                 </div>
                             </div>
                         </div>
+                      </div>
+                        
                     </div>
                 </div>
             </div>
+            <loading v-if='loading'></loading>
             <!-- use the modal component, pass in the prop -->
             <modal v-if="showModal" @close="showModal = false">
               <!--
@@ -87,8 +105,19 @@
               <div slot='body'>I'm sorry, the correct was @{{correctAnswer}}.</div>
             </modal>
         </div>
+            <script type="text/x-template" id="question-container">
+              
+            </script>
             <script type="text/x-template" id="modal-template">
-                <transition name="modal">
+                transition name="modal">
+                  <div class="modal-mask">
+                    <div class="modal-wrapper">
+                      <div class="modal-container">
+
+                        <div class="modal-header">
+                          <slot name="header">
+                          </slot>
+                        </div><transition name="modal">
                   <div class="modal-mask">
                     <div class="modal-wrapper">
                       <div class="modal-container">
@@ -115,6 +144,42 @@
                     </div>
                   </div>
                 </transition>
+            </script>
+            <script type="text/x-template" id="loading-modal">
+                    <div class='loader-container'>
+                        <svg class="loader">
+                          <filter id="blur">
+                            <fegaussianblur in="SourceGraphic" stddeviation="2"></fegaussianblur>
+                          </filter>
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="#F4F519" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+                        </svg>
+                        <svg class="loader loader-2">
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="#DE2FFF" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+                        </svg>
+                        <svg class="loader loader-3">
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="#FF5932" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+                        </svg>
+                        <svg class="loader loader-4">
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="#E97E42" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+                        </svg>
+                        <svg class="loader loader-5">
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="white" stroke-width="6" stroke-linecap="round" filter="url(#blur)"></circle>
+                        </svg>
+                        <svg class="loader loader-6">
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="#00DCA3" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+                        </svg>
+                        <svg class="loader loader-7">
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="purple" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+                        </svg>
+                        <svg class="loader loader-8">
+                          <circle cx="75" cy="75" r="60" fill="transparent" stroke="#AAEA33" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+                        </svg>
+                    </div>
+            </script>
+            <script type="text/x-template" id="category-item">
+              <li>
+                <div> @{{ category.name }} </div>
+              </li>
             </script>
 
     </body>
