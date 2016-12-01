@@ -1,6 +1,7 @@
-## Initializing
-To initialize this project, clone the repo and run these simple commands:
+## Setup
+Run the following commands:
 ```
+php artisan key:generate
 composer install
 npm install
 gulp
