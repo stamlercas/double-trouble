@@ -216,6 +216,10 @@ $(document).ready(function() {
                 if (answer.indexOf('"') == 0)   //if the answer is within quotation marks, ex: "Mourning Becomes Electra" will match Mourning Becomes Electra
                     if (answer.substring(1, answer.length - 1) === response)
                         correct = true;
+                if (answer.indexOf('(') == 0)   // if the answer starts with a parenthesis, ex: (Samuel) Morse
+                    if (answer.substring(1, answer.indexOf(")") + answer.substring(")" + 1, answer.length)) === response ||
+                        answer.substring(answer.indexOf(")" + 1, answer.length)) === response)
+                        correct = true;
                 if (correct)
                 {
                     this.score += this.question.value;
