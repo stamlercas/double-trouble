@@ -75,6 +75,7 @@ $(document).ready(function() {
         // Methods we want to use in our application are registered here
         methods: {
             fetchCategories: function() {
+                this.question.body = 'Fetching Categories...';
                 var categories;
                 this.$http.get('/categories').then((response) => {
                     categories = JSON.parse(response.body); // placing the categories into the array
@@ -82,6 +83,7 @@ $(document).ready(function() {
                     var numCategories = 5;      // number of categories
                     var numQuestions = 5;       // number of questions in each category
 
+                    this.question.body = "Selecting Categories...";
                     var temp = [];   // this will be where categories questions are pushed to
                     for (var i = 0; i < numCategories; i++)
                     {
@@ -163,7 +165,7 @@ $(document).ready(function() {
                             var question = body.category.questions[Math.floor(Math.random() * ( (body.category.questions.length - 1) - (0 + 1)))];
                             // check whether the question matches the values specified
                             var questionInCategory = this.currentQuestion % this.numQuestions;
-                            console.log([jeopardyValues[questionInCategory], jeopardyValues[questionInCategory] * 2]);
+                            //console.log([jeopardyValues[questionInCategory], jeopardyValues[questionInCategory] * 2]);
                             foundMatch = matchesQuestionValue(question, [jeopardyValues[questionInCategory], jeopardyValues[questionInCategory] * 2]);
                             if (question.body.search('<') != -1)   // if question contains HTML, search for new question
                                 foundMatch = false;
@@ -173,16 +175,17 @@ $(document).ready(function() {
                         question.body = question.body.substring(1, question.body.length - 1);
                         this.$set(this, 'question', question );
 
+                        this.categories[i].already_used = true;     // do not want to repeat the same question twice
                         this.question.category = this.categories[i];
                         this.loading = false;
-                        console.log(this.question);
+                        console.log("The answer is: " + this.question.response);
                     }, (response) => {
                         console.log(response);
                 });
             },
             answerQuestion: function(response) {
                 var answer = replaceAllBackSlash(this.question.response.toUpperCase());
-                var response = response.toUpperCase();
+                var response = response.toUpperCase();      // both of these are put into upper case to make them case insensitive
                 //if (this.question.response.toUpperCase().match(response.toUpperCase()))
                 var answerAdditives = [
                     '',
@@ -192,23 +195,26 @@ $(document).ready(function() {
                 ];
                 var correct = false;
                 for (var i = 0; i < answerAdditives.length; i++)
-                    if (answer == answerAdditives[i] + response.toUpperCase())
+                    if (answer === answerAdditives[i] + response)
                     {
                         correct = true;
                         break;
                     }
                 // check to see whether the response matches the correct answer before paranthesis
-                if (response.indexOf(" (") != -1)
-                    if (answer == response.substring(0, response.indexOf(" (")))
+                if (answer.indexOf(" (") != -1)
+                    if (answer.substring(0, answer.indexOf(" (")) == response)
                         correct = true;
                 // or after parenthesis
-                if (response.indexOf(") ") != -1)
-                    if (answer == response.substring(") ", response.length))
+                if (answer.indexOf(") ") != -1)
+                    if (answer.substring(") ", answer.length) == response)
                         correct = true;
                 // if an answer has 2 answers seperated with an &
-                if (response.indexOf(" & ") != -1)
-                    if ( answer == response.substring(0, response.indexOf(" &")) ||
-                            answer == response.substring( response.indexOf("& ") + 2, response.length))
+                if (answer.indexOf(" & ") != -1)
+                    if ( answer.substring(0, answer.indexOf(" &")) === response ||
+                            answer.substring( answer.indexOf("& ") + 2, answer.length) === response)
+                        correct = true;
+                if (answer.indexOf('"') == 0)   //if the answer is within quotation marks, ex: "Mourning Becomes Electra" will match Mourning Becomes Electra
+                    if (answer.substring(1, answer.length - 1) === response)
                         correct = true;
                 if (correct)
                 {
