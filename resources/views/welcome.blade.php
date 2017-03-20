@@ -64,8 +64,7 @@
                           </div>
                         </div>
                         <br />
-                        <div class="question" id="body">
-                            @{{question.body}}
+                        <div class="question" id="body" v-html="question.body">
                         </div>
                         <div class="answer-form" id="answer-form" v-if="!finished">
                             <!--
@@ -74,7 +73,7 @@
                             <input type="text" class="form-control" placeholder="Answer"
                                    id='response'
                                    v-model="response"
-                                   v-on:keyup.13="answerQuestion(response)"
+                                   v-on:keyup.13="if(!showModal) answerQuestion(response)"
                                    autofocus>
                         </div>
                         <div class='btn-container' v-if="!finished">

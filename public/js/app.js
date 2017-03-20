@@ -64,7 +64,8 @@ $(document).ready(function() {
             response: '',
             numCategories: 5,   // number of categories in game
             numQuestions: 5,    // number of questions in each category
-            currentQuestion: 0  // to keep track of how many questions the user has answered
+            currentQuestion: 0,  // to keep track of how many questions the user has answered
+            questionsAsked: new Set()
         },
 
         // Anything within the ready function will run when the application loads
@@ -167,11 +168,11 @@ $(document).ready(function() {
                             var questionInCategory = this.currentQuestion % this.numQuestions;
                             //console.log([jeopardyValues[questionInCategory], jeopardyValues[questionInCategory] * 2]);
                             foundMatch = matchesQuestionValue(question, [jeopardyValues[questionInCategory], jeopardyValues[questionInCategory] * 2]);
-                            if (question.body.search('<') != -1)   // if question contains HTML, search for new question
-                                foundMatch = false;
-                            index++; //
-                        }   while(!foundMatch || index < this.categories[i].questions_count);
+                            //if (question.body.search('<') != -1)   // if question contains HTML, search for new question
+                            //    foundMatch = false;
+                        }   while(this.questionsAsked.has(question.id) || ++index < this.categories[i].questions_count);
                         // once it finds suitable question, set it in app and strip slashes
+                        this.questionsAsked.add(question.id);
                         question.body = question.body.substring(1, question.body.length - 1);
                         this.$set(this, 'question', question );
 
@@ -184,12 +185,14 @@ $(document).ready(function() {
                 });
             },
             answerQuestion: function(response) {
+                if (showModal) return;
                 var answer = replaceAllBackSlash(this.question.response.toUpperCase());
                 var response = response.toUpperCase();      // both of these are put into upper case to make them case insensitive
                 //if (this.question.response.toUpperCase().match(response.toUpperCase()))
                 var answerAdditives = [
                     '',
                     'A ',
+                    'AN ',
                     'THE ',
                     'SIR '
                 ];
@@ -211,7 +214,8 @@ $(document).ready(function() {
                 // if an answer has 2 answers seperated with an &
                 if (answer.indexOf(" & ") != -1)
                     if ( answer.substring(0, answer.indexOf(" &")) === response ||
-                            answer.substring( answer.indexOf("& ") + 2, answer.length) === response)
+                            answer.substring( answer.indexOf("& ") + 2, answer.length) === response ||
+                            (answer.substring(0, answer.indexOf(" &")) + " and " + (answer.indexOf("& "  + 2, answer.length))) === response)
                         correct = true;
                 if (answer.indexOf('"') == 0)   //if the answer is within quotation marks, ex: "Mourning Becomes Electra" will match Mourning Becomes Electra
                     if (answer.substring(1, answer.length - 1) === response)
@@ -245,7 +249,7 @@ $(document).ready(function() {
             reset: function() {
                 this.currentQuestion++;
                 this.$data.response = '';
-                if (this.currentQuestion >= this.numCategories * this.numQuestions)
+                if (this.finished)
                     this.finish();
                 else
                     this.getQuestion();
