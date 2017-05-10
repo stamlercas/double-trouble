@@ -73,7 +73,7 @@
                             <input type="text" class="form-control" placeholder="Answer"
                                    id='response'
                                    v-model="response"
-                                   v-on:keyup.13="if(!showModal) answerQuestion(response)"
+                                   v-on:keyup.13="answerQuestion(response)"
                                    autofocus>
                         </div>
                         <div class='btn-container' v-if="!finished">

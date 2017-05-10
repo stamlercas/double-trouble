@@ -185,7 +185,7 @@ $(document).ready(function() {
                 });
             },
             answerQuestion: function(response) {
-                if (showModal) return;
+                if (this.showModal) return;
                 var answer = replaceAllBackSlash(this.question.response.toUpperCase());
                 var response = response.toUpperCase();      // both of these are put into upper case to make them case insensitive
                 //if (this.question.response.toUpperCase().match(response.toUpperCase()))
